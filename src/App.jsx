@@ -13,6 +13,43 @@ export default function App() {
   const [answer, setAnswer] = useState('')
   const [musicOn, setMusicOn] = useState(false)
   const audioRef = useRef(null)
+  useEffect(() => {
+  const audio = audioRef.current
+  if (!audio) return
+
+  audio.volume = 0.5
+
+  const startMusic = async () => {
+    try {
+      await audio.play()
+      setMusicOn(true)
+    } catch {
+      setMusicOn(false)
+    }
+  }
+
+  startMusic()
+
+  const startOnFirstInteraction = () => {
+    if (audio.paused) {
+      startMusic()
+    }
+
+    window.removeEventListener('click', startOnFirstInteraction)
+    window.removeEventListener('touchstart', startOnFirstInteraction)
+    window.removeEventListener('keydown', startOnFirstInteraction)
+  }
+
+  window.addEventListener('click', startOnFirstInteraction)
+  window.addEventListener('touchstart', startOnFirstInteraction)
+  window.addEventListener('keydown', startOnFirstInteraction)
+
+  return () => {
+    window.removeEventListener('click', startOnFirstInteraction)
+    window.removeEventListener('touchstart', startOnFirstInteraction)
+    window.removeEventListener('keydown', startOnFirstInteraction)
+  }
+}, [])
 
   const toggleMusic = async () => {
     if (!audioRef.current) return
