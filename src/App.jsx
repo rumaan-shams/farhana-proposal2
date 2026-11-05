@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Heart, Music2, VolumeX, Sparkles, MailOpen, Camera } from 'lucide-react'
 
